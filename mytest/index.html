@@ -6,6 +6,8 @@
 	
 	<script type='text/javascript' src='http://code.jquery.com/jquery-1.4.2.js'></script>
 	<script type='text/javascript' src="http://cdn.gamequeryjs.com/jquery.gamequery.js"></script>
+	<script type='text/javascript' src="./js/stage.js"></script>
+	<script type='text/javascript' src="./js/player.js"></script>
 </head>
 <body>
 
@@ -25,43 +27,6 @@ var FRAME_RATE = 30;
 
 $("#stage").css("width", STAGE_WIDTH);
 $("#stage").css("height", STAGE_HEIGHT);
-
-var Stage = function () {
-	this.animations = {};
-	this.objects = {};
-	this._contructor = function () {
-		console.log("init background");
-		$("#stage").playground({height:STAGE_HEIGHT, width:STAGE_WIDTH, keyTracker:true})
-			.addGroup("bg", {width:STAGE_WIDTH, height:STAGE_HEIGHT}).end()
-			.addGroup("objects", {width:STAGE_WIDTH, height:STAGE_HEIGHT}).end()
-			.addGroup("actors", {width:STAGE_WIDTH, height:STAGE_HEIGHT});
-
-		this.animations.bg = new $.gQ.Animation({imageURL:"img/bg.gif"});
-		$("#bg").addSprite("bg_map", {animation:this.animations.bg,
-				width:STAGE_WIDTH, height:STAGE_HEIGHT });
-
-		var _objId = 100;
-		this.objects[_objId] = new $.gQ.Animation({});
-		$("#objects").addSprite("obj_"+_objId, {animation:this.objects[_objId],
-			width:50, height:50, posx:100, posy:100})
-		$("#obj_"+_objId).addClass("object_group");
-	};
-	this._contructor();
-
-};
-
-var Player = function () {
-	this.animations = {};
-	this.node;
-	this._contructor = function () {
-		console.log("init player");
-		this.animations.player_idle = new $.gQ.Animation({imageURL:"img/player.png"});
-		$("#actors").addSprite("player", {animation:this.animations.player_idle,
-			width:56, height:62, posx:STAGE_WIDTH/2, posy:STAGE_HEIGHT/2});
-		this.node = $("#player");
-	};
-	this._contructor();
-};
 
 // game logic
 $(function(){
