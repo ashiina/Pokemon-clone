@@ -21,8 +21,8 @@ var KEY_D = 68;
 var KEY_W = 87;
 var KEY_S = 83;
 
-var STAGE_HEIGHT = 401;
-var STAGE_WIDTH = 500;
+var STAGE_HEIGHT = 480;
+var STAGE_WIDTH = 640;
 var FRAME_RATE = 30;
 
 $("#stage").css("width", STAGE_WIDTH);
@@ -33,6 +33,7 @@ $(function(){
 	console.log("start");
 
 	var stage = new Stage();
+	stage.initObjects();
 	var player = new Player();
 	$.playground().startGame();
 
@@ -57,7 +58,7 @@ $(function(){
 		if (newy > STAGE_HEIGHT-62) newy = STAGE_HEIGHT-62;
 		if (newy < 0) newy = 0;
 
-		var c = $("#player").collision("#objects,.object_group", {x:newx, y:newy});
+		var c = $("#player").collision("#objects,.object_1", {x:newx, y:newy});
 		if (c.length > 0) {
 			console.log("COLLIDED!!");
 			return;
