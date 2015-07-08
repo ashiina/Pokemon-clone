@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+	<title>gQ tutorial</title>
+	
+	<script type='text/javascript' src='http://code.jquery.com/jquery-1.4.2.js'></script>
+	<script type='text/javascript' src="http://cdn.gamequeryjs.com/jquery.gamequery.js"></script>
+</head>
+<body>
+
+<div id="stage" style="width: 10px; height: 10px; background: black;">
+</div>
+
+<script type="text/javascript">
+
+var KEY_A = 65;
+var KEY_D = 68;
+var KEY_W = 87;
+var KEY_S = 83;
+
+var STAGE_HEIGHT = 401;
+var STAGE_WIDTH = 500;
+var FRAME_RATE = 30;
+
+$("#stage").css("width", STAGE_WIDTH);
+$("#stage").css("height", STAGE_HEIGHT);
+
+var Stage = function () {
+	this.animations = {};
+	this.objects = {};
+	this._contructor = function () {
+		console.log("init background");
+		$("#stage").playground({height:STAGE_HEIGHT, width:STAGE_WIDTH, keyTracker:true})
+			.addGroup("bg", {width:STAGE_WIDTH, height:STAGE_HEIGHT}).end()
+			.addGroup("objects", {width:STAGE_WIDTH, height:STAGE_HEIGHT}).end()
+			.addGroup("actors", {width:STAGE_WIDTH, height:STAGE_HEIGHT});
+
+		this.animations.bg = new $.gQ.Animation({imageURL:"img/bg.gif"});
+		$("#bg").addSprite("bg_map", {animation:this.animations.bg,
+				width:STAGE_WIDTH, height:STAGE_HEIGHT });
+
+		var _objId = 100;
+		this.objects[_objId] = new $.gQ.Animation({});
+		$("#objects").addSprite("obj_"+_objId, {animation:this.objects[_objId],
+			width:50, height:50, posx:100, posy:100})
+		$("#obj_"+_objId).addClass("object_group");
+	};
+	this._contructor();
+
+};
+
+var Player = function () {
+	this.animations = {};
+	this.node;
+	this._contructor = function () {
+		console.log("init player");
+		this.animations.player_idle = new $.gQ.Animation({imageURL:"img/player.png"});
+		$("#actors").addSprite("player", {animation:this.animations.player_idle,
+			width:56, height:62, posx:STAGE_WIDTH/2, posy:STAGE_HEIGHT/2});
+		this.node = $("#player");
+	};
+	this._contructor();
+};
+
+// game logic
+$(function(){
+	console.log("start");
+
+	var stage = new Stage();
+	var player = new Player();
+	$.playground().startGame();
+
+	$.playground().registerCallback(function(){
+
+		var newx = player.node.x();
+		var newy = player.node.y();
+		if(jQuery.gameQuery.keyTracker[KEY_A]){
+			newx -= 5;
+		}  
+		if(jQuery.gameQuery.keyTracker[KEY_D]){
+			newx += 5;
+		}  
+		if(jQuery.gameQuery.keyTracker[KEY_W]){
+			newy -= 5;
+		}  
+		if(jQuery.gameQuery.keyTracker[KEY_S]){ 
+			newy += 5;
+		}
+		if (newx < 0) newx = 0;
+		if (newx > STAGE_WIDTH-56) newx = STAGE_WIDTH-56;
+		if (newy > STAGE_HEIGHT-62) newy = STAGE_HEIGHT-62;
+		if (newy < 0) newy = 0;
+
+		var c = $("#player").collision("#objects,.object_group", {x:newx, y:newy});
+		if (c.length > 0) {
+			console.log("COLLIDED!!");
+			return;
+		}
+
+		player.node.x(newx);
+		player.node.y(newy);
+
+	}, FRAME_RATE);
+});
+
+</script>
+</body>
+</html>
+
