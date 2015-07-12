@@ -39,33 +39,7 @@ $(function(){
 
 	$.playground().registerCallback(function(){
 
-		var newx = player.node.x();
-		var newy = player.node.y();
-		if(jQuery.gameQuery.keyTracker[KEY_A]){
-			newx -= 5;
-		}  
-		if(jQuery.gameQuery.keyTracker[KEY_D]){
-			newx += 5;
-		}  
-		if(jQuery.gameQuery.keyTracker[KEY_W]){
-			newy -= 5;
-		}  
-		if(jQuery.gameQuery.keyTracker[KEY_S]){ 
-			newy += 5;
-		}
-		if (newx < 0) newx = 0;
-		if (newx > STAGE_WIDTH-56) newx = STAGE_WIDTH-56;
-		if (newy > STAGE_HEIGHT-62) newy = STAGE_HEIGHT-62;
-		if (newy < 0) newy = 0;
-
-		var c = $("#player").collision("#objects,.object_1", {x:newx, y:newy});
-		if (c.length > 0) {
-			console.log("COLLIDED!!");
-			return;
-		}
-
-		player.node.x(newx);
-		player.node.y(newy);
+        player.move(jQuery.gameQuery.keyTracker);
 
 	}, FRAME_RATE);
 });
