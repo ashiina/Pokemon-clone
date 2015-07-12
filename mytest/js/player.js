@@ -6,8 +6,8 @@ var Player = function () {
     this._contructor = function () {
         console.log("init player");
         $("#actors").addSprite("player", {
-            width:56,
-            height:62,
+            width:PLAYER_WIDTH,
+            height:PLAYER_HEIGHT,
             posx:STAGE_WIDTH/2,
             posy:STAGE_HEIGHT/2
         });
@@ -19,29 +19,25 @@ var Player = function () {
         var type = 0;
         var offset_x = 0;
         var offset_y = 0;
+        var cond_key = KEY_NONE;
         if (key == KEY_NONE) { //キーが押されてなかった時は直前のキーに応じて画像を選択
-            offset_x = 75;
-            switch (this.prev_key) {
-                case KEY_A: offset_y = 0; break;
-                case KEY_D: offset_y = 75; break;
-                case KEY_W: offset_y = 150; break;
-                case KEY_S:
-                default: offset_y = 225; break;
-            }
+            offset_x = 0 * PLAYER_WIDTH;
+            cond_key = this.prev_key;
         } else { //キーに応じてアニメーション
             type = $.gQ.ANIMATION_PINGPONG | $.gQ.ANIMATION_HORIZONTAL;
-            switch (key) {
-                case KEY_A: offset_y = 0; break;
-                case KEY_D: offset_y = 75; break;
-                case KEY_W: offset_y = 150; break;
-                case KEY_S:
-                default: offset_y = 225; break;
-            }
+            cond_key = key;
+        }
+        switch (cond_key) {
+            case KEY_W: offset_y = 1 * PLAYER_HEIGHT; break;
+            case KEY_A: offset_y = 2 * PLAYER_HEIGHT; break;
+            case KEY_D: offset_y = 3 * PLAYER_HEIGHT; break;
+            case KEY_S:
+            default: offset_y = 0 * PLAYER_HEIGHT; break;
         }
         var animation = new $.gQ.Animation({
-            imageURL:"http://veekun.com/static/pokedex/downloads/diamond-pearl-frame2.png",
+            imageURL:"img/players.png",
             numberOfFrame: 3,
-            delta: 75,
+            delta: 30,
             rate: 180,
             type: type,
             offsetx: offset_x,
@@ -63,8 +59,8 @@ var Player = function () {
         this.prev_key = key;
 
         if (newx < 0) newx = 0;
-        if (newx > STAGE_WIDTH - 56) newx = STAGE_WIDTH - 56;
-        if (newy > STAGE_HEIGHT - 62) newy = STAGE_HEIGHT - 62;
+        if (newx > STAGE_WIDTH - PLAYER_WIDTH) newx = STAGE_WIDTH - PLAYER_WIDTH;
+        if (newy > STAGE_HEIGHT - PLAYER_HEIGHT) newy = STAGE_HEIGHT - PLAYER_HEIGHT;
         if (newy < 0) newy = 0;
 
         var c = $("#player").collision("#objects,.object_1", {x:newx, y:newy});
