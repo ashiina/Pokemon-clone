@@ -2,6 +2,7 @@
 var Player = function () {
     this.node;
     this.prev_key;
+	this.owned_pokemons = [];
 
     this._contructor = function () {
         console.log("init player");
@@ -12,6 +13,9 @@ var Player = function () {
             posy:STAGE_HEIGHT/2
         });
         this.node = $("#player");
+
+		// TODO default pokemon is pikachu, just for test.
+		this.addPokemon(new Pikachu());
     };
 
     this.make_animation = function (key) {
@@ -46,7 +50,16 @@ var Player = function () {
         this.node.setAnimation(animation, null);
     };
 
+	this.addPokemon = function (pokemon) {
+		if (!Pokemon.prototype.isPrototypeOf(pokemon)) {
+			console.log("Invalid:only addPokemon() only takes Pokemon class");
+			return;
+		}
+		this.owned_pokemons.push(pokemon);
+	}
+
     this._contructor();
+
 };
 
 
