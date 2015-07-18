@@ -1,5 +1,4 @@
 
-
 var KEY_NONE = -1;
 var KEY_A = 65;
 var KEY_D = 68;
