@@ -21,11 +21,15 @@ $("#stage").css("height", STAGE_HEIGHT);
 $(function(){
 	console.log("start");
 
+	// initializing objects
 	var stage = new Stage();
 	stage.initObjects();
 	var player = new Player();
+
+	// gameQuery start
 	$.playground().startGame();
 
+	// game logic is here
 	$.playground().registerCallback(function(){
         var keys = jQuery.gameQuery.keyTracker;
         var newx = player.node.x();
