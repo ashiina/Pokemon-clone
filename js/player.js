@@ -51,6 +51,10 @@ var Player = function () {
     };
 
 	this.addPokemon = function (pokemon) {
+		if (!Pokemon.prototype.isPrototypeOf(pokemon)) {
+			console.log("Invalid:only addPokemon() only takes Pokemon class");
+			return;
+		}
 		this.owned_pokemons.push(pokemon);
 	}
 
