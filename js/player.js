@@ -46,39 +46,6 @@ var Player = function () {
         this.node.setAnimation(animation, null);
     };
 
-    this.move = function (keys) {
-        var newx = this.node.x();
-        var newy = this.node.y();
-        var key = KEY_NONE;
-        if (keys[KEY_A]) { key = KEY_A; newx -= 5; }
-        else if (keys[KEY_S]) { key = KEY_S; newy += 5; }
-        else if (keys[KEY_D]) { key = KEY_D; newx += 5; }
-        else if (keys[KEY_W]) { key = KEY_W; newy -= 5; }
-
-        this.make_animation(key);
-        this.prev_key = key;
-
-        if (newx < 0) newx = 0;
-        if (newx > STAGE_WIDTH - PLAYER_WIDTH) newx = STAGE_WIDTH - PLAYER_WIDTH;
-        if (newy > STAGE_HEIGHT - PLAYER_HEIGHT) newy = STAGE_HEIGHT - PLAYER_HEIGHT;
-        if (newy < 0) newy = 0;
-
-        var c = $("#player").collision("#objects,.object_1", {x:newx, y:newy});
-        if (c.length > 0) {
-            console.log("Structure collision");
-            return;
-        }
-        var c2 = $("#player").collision("#objects,.object_2");
-        if (c2.length > 0 && key != KEY_NONE) {
-            console.log("In grass");
-			var r = Math.random();
-			if (r < 0.01) console.log("Monster!");
-		}
-
-        this.node.x(newx);
-        this.node.y(newy);
-    };
-
     this._contructor();
 };
 
