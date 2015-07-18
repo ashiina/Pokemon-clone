@@ -32,6 +32,14 @@ var Stage = function () {
 		});
 		this.placeObject(pkcenter,TS*8,TS*5,100,300,OBJECT_TYPE_STRUCTURE);
 
+		var grass = new $.gQ.Animation({imageURL:MAP_SPRITE_FILENAME,
+			width:TS,height:TS,offsetx:0,offsety:0
+		});
+		for (var x=0;x<5;x++) {
+			for (var y=0;y<5;y++) {
+				this.placeObject(grass, TS,TS,450+(x*TS),200+(y*TS),OBJECT_TYPE_GRASS);
+			}
+		}
 	};
 
 	this.placeObject = function (animation, w, h, x, y, type) {

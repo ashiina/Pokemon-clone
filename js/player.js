@@ -65,9 +65,15 @@ var Player = function () {
 
         var c = $("#player").collision("#objects,.object_1", {x:newx, y:newy});
         if (c.length > 0) {
-            console.log("COLLIDED!!");
+            console.log("Structure collision");
             return;
         }
+        var c2 = $("#player").collision("#objects,.object_2");
+        if (c2.length > 0 && key != KEY_NONE) {
+            console.log("In grass");
+			var r = Math.random();
+			if (r < 0.01) console.log("Monster!");
+		}
 
         this.node.x(newx);
         this.node.y(newy);
