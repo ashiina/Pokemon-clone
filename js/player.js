@@ -1,7 +1,6 @@
 
 var Player = function () {
     this.node;
-    this.prev_key;
 	this.owned_pokemons = [];
 
     this._contructor = function () {
@@ -18,15 +17,14 @@ var Player = function () {
 		this.addPokemon(new Pikachu());
     };
 
-    this.make_animation = function (key) {
-        if (key == this.prev_key) return;
+    this.make_animation = function (key, prev_key) {
         var type = 0;
         var offset_x = 0;
         var offset_y = 0;
         var cond_key = KEY_NONE;
         if (key == KEY_NONE) { //キーが押されてなかった時は直前のキーに応じて画像を選択
             offset_x = 0 * PLAYER_WIDTH;
-            cond_key = this.prev_key;
+            cond_key = prev_key;
         } else { //キーに応じてアニメーション
             type = $.gQ.ANIMATION_PINGPONG | $.gQ.ANIMATION_HORIZONTAL;
             cond_key = key;
