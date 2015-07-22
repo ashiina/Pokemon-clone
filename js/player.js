@@ -18,6 +18,7 @@ var Player = function () {
     };
 
     this.make_animation = function (key, prev_key) {
+        if (key == prev_key) return;
         var type = 0;
         var offset_x = 0;
         var offset_y = 0;
