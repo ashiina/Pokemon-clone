@@ -38,7 +38,6 @@ $(function(){
 	$.playground().startGame();
 
     var stage_callback = function (key) {
-        console.log('stage');
         var newx = player.node.x();
         var newy = player.node.y();
 
@@ -63,7 +62,6 @@ $(function(){
         }
         var c2 = $("#player").collision("#objects,.object_2");
         if (c2.length > 0 && key != KEY_NONE) {
-            console.log("In grass");
 			var r = Math.random();
 			if (r < MONSTER_ENCOUNT_PROBABILITY) console.log("Monster!");
 		}
@@ -73,7 +71,6 @@ $(function(){
     }
 
     var menu_callback = function (key) {
-        console.log('menu');
         switch (key) {
             case KEY_M: if (key != prev_key) show_stage(); return;
         }
