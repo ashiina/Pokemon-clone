@@ -95,7 +95,7 @@ $(function(){
             case SCREEN_STAGE: stage_callback(key); break;
             case SCREEN_MENU: menu_callback(key); break;
         }
-        if (key > 0) prev_key = key;
+        if (key != KEY_NONE) prev_key = key;
 	}, FRAME_RATE);
 });
 
