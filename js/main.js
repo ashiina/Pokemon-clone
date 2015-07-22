@@ -32,6 +32,7 @@ $(function(){
 	var stage = new Stage();
 	stage.initObjects();
 	var player = new Player();
+	var menu = new Menu();
 
 	// gameQuery start
 	$.playground().startGame();
@@ -42,7 +43,7 @@ $(function(){
         var newy = player.node.y();
 
         switch (key) {
-            case KEY_M: if (key != prev_key) screen_id = SCREEN_MENU; return;
+            case KEY_M: if (key != prev_key) show_menu(); return;
             case KEY_A: newx -= 5; break;
             case KEY_S: newy += 5; break;
             case KEY_D: newx += 5; break;
@@ -74,7 +75,7 @@ $(function(){
     var menu_callback = function (key) {
         console.log('menu');
         switch (key) {
-            case KEY_M: if (key != prev_key) screen_id = SCREEN_STAGE; return;
+            case KEY_M: if (key != prev_key) show_stage(); return;
         }
     }
 
@@ -88,6 +89,16 @@ $(function(){
         else if (keys[KEY_W]) key = KEY_W;
         return key;
     }
+
+	var show_menu = function () {
+		menu.show();
+		screen_id = SCREEN_MENU;
+	}
+
+	var show_stage = function () {
+		menu.hide();
+		screen_id = SCREEN_STAGE;
+	}
 
 	// game logic is here
 	$.playground().registerCallback(function(){
