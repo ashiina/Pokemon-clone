@@ -13,8 +13,14 @@ var Player = function () {
         });
         this.node = $("#player");
 
-		// TODO default pokemon is pikachu, just for test.
+		// TODO set default pokemon, just for test.
 		this.addPokemon(new Pikachu());
+		this.addPokemon(new Hitokage());
+
+		// TODO debug display
+		for (var i=0; i<this.owned_pokemons.length; i++) {
+			console.log("owns: "+ this.owned_pokemons[i].name);
+		}
     };
 
     this.make_animation = function (key, prev_key) {
