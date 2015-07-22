@@ -40,7 +40,7 @@ var Player = function () {
         var animation = new $.gQ.Animation({
             imageURL:"img/players.png",
             numberOfFrame: 3,
-            delta: 30,
+            delta: 25,
             rate: 180,
             type: type,
             offsetx: offset_x,
