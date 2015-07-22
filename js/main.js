@@ -1,4 +1,5 @@
 
+var KEY_START = -2;
 var KEY_NONE = -1;
 var KEY_A = 65;
 var KEY_D = 68;
@@ -27,7 +28,7 @@ $(function(){
 
 	// initializing objects
     var screen_id = SCREEN_STAGE;
-    var prev_key = KEY_NONE;
+    var prev_key = KEY_START;
 	var stage = new Stage();
 	stage.initObjects();
 	var player = new Player();
