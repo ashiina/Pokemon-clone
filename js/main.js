@@ -6,6 +6,8 @@ var KEY_D = 68;
 var KEY_W = 87;
 var KEY_S = 83;
 var KEY_M = 77;
+var KEY_RET = 13;
+var KEY_ESC = 27;
 
 var STAGE_HEIGHT = 480;
 var STAGE_WIDTH = 640;
@@ -42,9 +44,10 @@ $(function(){
     var stage_callback = function (key) {
         var newx = OBJECTS.player.node.x();
         var newy = OBJECTS.player.node.y();
-
+		console.log(key);
         switch (key) {
             case KEY_M: if (key != prev_key) show_menu(); return;
+            case KEY_RET: interact_stage({x:newx, y:newy}); return;
             case KEY_A: newx -= 5; break;
             case KEY_S: newy += 5; break;
             case KEY_D: newx += 5; break;
@@ -72,6 +75,24 @@ $(function(){
         OBJECTS.player.node.y(newy);
     }
 
+	var interact_stage = function (opts) {
+		var newx = opts.x;
+		var newy = opts.y;
+		console.log("dir:"+OBJECTS.player.direction);
+		switch (OBJECTS.player.direction) {
+			case PlayerConst.DIR_UP: newy -= 5; break;
+			case PlayerConst.DIR_LEFT: newx -= 5; break;
+			case PlayerConst.DIR_RIGHT: newx += 5; break;
+			case PlayerConst.DIR_DOWN: newy += 5; break;
+		}
+        var c = $("#player").collision("#stage,#stage_objects,.pkcenter", {x:newx, y:newy});
+        if (c.length > 0) {
+			console.log("INTERACT pokemon center!");
+			OBJECTS.player.healAllPokemons();
+            return;
+        }
+	}
+
     var menu_callback = function (key) {
 		var newy = OBJECTS.menu.currentCursorPos;
         switch (key) {
@@ -92,6 +113,7 @@ $(function(){
         else if (keys[KEY_S]) key = KEY_S;
         else if (keys[KEY_D]) key = KEY_D;
         else if (keys[KEY_W]) key = KEY_W;
+        else if (keys[KEY_RET]) key = KEY_RET;
         return key;
     }
 

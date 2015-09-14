@@ -33,7 +33,8 @@ var Stage = function () {
 		var pkcenter = new $.gQ.Animation({imageURL:StageConst.MAP_SPRITE_FILENAME,
 			width:_ts*8,height:_ts*5,offsetx:_ts*49,offsety:_ts*14
 		});
-		this.placeObject(pkcenter,_ts*8,_ts*5,100,300,StageConst.OBJECT_TYPE_STRUCTURE);
+		var pkcenter_id = this.placeObject(pkcenter,_ts*8,_ts*5,100,300,StageConst.OBJECT_TYPE_STRUCTURE);
+		$(pkcenter_id).addClass("pkcenter");
 
 		var grass = new $.gQ.Animation({imageURL:StageConst.MAP_SPRITE_FILENAME,
 			width:_ts,height:_ts,offsetx:0,offsety:0
@@ -55,7 +56,10 @@ var Stage = function () {
 			type === StageConst.OBJECT_TYPE_GRASS ) {
 			$("#obj_"+objId).addClass("object_"+type);
 		}
+
+		return "#obj_"+objId;
 	};
+
 };
 
 

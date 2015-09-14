@@ -1,7 +1,15 @@
 
+var PlayerConst = {
+	DIR_UP: 1,
+	DIR_DOWN: 2,
+	DIR_LEFT: 3,
+	DIR_RIGHT: 4
+};
+
 var Player = function () {
     this.node;
 	this.owned_pokemons = [];
+	this.direction;
 
     this._contructor = function () {
         console.log("init player");
@@ -21,9 +29,12 @@ var Player = function () {
 
 		// TODO debug display
 		for (var i=0; i<this.owned_pokemons.length; i++) {
-			console.log("owns: "+ this.owned_pokemons[i].name);
+			console.log(this.owned_pokemons[i].imageUrl);
+			this.owned_pokemons[i].setHp(this.owned_pokemons[i].max_hp - 17);
 		}
     };
+
+	
 
     this.make_animation = function (key, prev_key) {
         if (key == prev_key) return;
@@ -39,11 +50,11 @@ var Player = function () {
             cond_key = key;
         }
         switch (cond_key) {
-            case KEY_W: offset_y = 1 * PLAYER_HEIGHT; break;
-            case KEY_A: offset_y = 2 * PLAYER_HEIGHT; break;
-            case KEY_D: offset_y = 3 * PLAYER_HEIGHT; break;
+            case KEY_W: offset_y = 1 * PLAYER_HEIGHT; this.direction = PlayerConst.DIR_UP; break;
+            case KEY_A: offset_y = 2 * PLAYER_HEIGHT; this.direction = PlayerConst.DIR_LEFT; break;
+            case KEY_D: offset_y = 3 * PLAYER_HEIGHT; this.direction = PlayerConst.DIR_RIGHT; break;
             case KEY_S:
-            default: offset_y = 0 * PLAYER_HEIGHT; break;
+            default: offset_y = 0 * PLAYER_HEIGHT; this.direction = PlayerConst.DIR_DOWN; break;
         }
         var animation = new $.gQ.Animation({
             imageURL:"img/players.png",
@@ -71,6 +82,12 @@ var Player = function () {
 			return;
 		}
 		this.owned_pokemons.splice(index, 1);
+	}
+
+	this.healAllPokemons = function () {
+		for (var i=0; i<this.owned_pokemons.length; i++) {
+			this.owned_pokemons[i].setHp(this.owned_pokemons[i].max_hp);
+		}
 	}
 
     this._contructor();
