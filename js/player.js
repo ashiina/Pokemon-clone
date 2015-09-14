@@ -63,6 +63,14 @@ var Player = function () {
 		this.owned_pokemons.push(pokemon);
 	}
 
+	this.removePokemon = function (index) {
+		if (index < 0 || index > this.owned_pokemons.length-2) {
+			console.log("Invalid:OoB");
+			return;
+		}
+		this.owned_pokemons.splice(index, 1);
+	}
+
     this._contructor();
 
 };

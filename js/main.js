@@ -19,6 +19,8 @@ var MONSTER_ENCOUNT_PROBABILITY = 0.015;
 var SCREEN_STAGE = 1;
 var SCREEN_MENU = 2;
 
+var OBJECTS = {};
+
 $("#stage").css("width", STAGE_WIDTH);
 $("#stage").css("height", STAGE_HEIGHT);
 
@@ -29,17 +31,17 @@ $(function(){
 	// initializing objects
     var screen_id = SCREEN_STAGE;
     var prev_key = KEY_START;
-	var stage = new Stage();
-	stage.initObjects();
-	var player = new Player();
-	var menu = new Menu();
+	OBJECTS.stage = new Stage();
+	OBJECTS.stage.initObjects();
+	OBJECTS.player = new Player();
+	OBJECTS.menu = new Menu();
 
 	// gameQuery start
 	$.playground().startGame();
 
     var stage_callback = function (key) {
-        var newx = player.node.x();
-        var newy = player.node.y();
+        var newx = OBJECTS.player.node.x();
+        var newy = OBJECTS.player.node.y();
 
         switch (key) {
             case KEY_M: if (key != prev_key) show_menu(); return;
@@ -48,7 +50,7 @@ $(function(){
             case KEY_D: newx += 5; break;
             case KEY_W: newy -= 5; break;
         }
-        player.make_animation(key, prev_key);
+        OBJECTS.player.make_animation(key, prev_key);
 
         if (newx < 0) newx = 0;
         if (newx > STAGE_WIDTH - PLAYER_WIDTH) newx = STAGE_WIDTH - PLAYER_WIDTH;
@@ -66,14 +68,20 @@ $(function(){
 			if (r < MONSTER_ENCOUNT_PROBABILITY) console.log("Monster!");
 		}
 
-        player.node.x(newx);
-        player.node.y(newy);
+        OBJECTS.player.node.x(newx);
+        OBJECTS.player.node.y(newy);
     }
 
     var menu_callback = function (key) {
+		var newy = OBJECTS.menu.currentCursorPos;
         switch (key) {
             case KEY_M: if (key != prev_key) show_stage(); return;
+			case KEY_W: newy -= 1; break;
+			case KEY_S: newy += 1; break;
         }
+		if (newy > OBJECTS.player.owned_pokemons.length) newy = OBJECTS.player.owned_pokemons.length;
+		if (newy < 1) newy = 1;
+		OBJECTS.menu.drawCursor(newy);
     }
 
     var get_key = function () {
@@ -88,12 +96,12 @@ $(function(){
     }
 
 	var show_menu = function () {
-		menu.show();
+		OBJECTS.menu.show();
 		screen_id = SCREEN_MENU;
 	}
 
 	var show_stage = function () {
-		menu.hide();
+		OBJECTS.menu.hide();
 		screen_id = SCREEN_STAGE;
 	}
 
