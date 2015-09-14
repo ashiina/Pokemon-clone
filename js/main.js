@@ -21,8 +21,8 @@ var SCREEN_MENU = 2;
 
 var OBJECTS = {};
 
-$("#stage").css("width", STAGE_WIDTH);
-$("#stage").css("height", STAGE_HEIGHT);
+$("#base").css("width", STAGE_WIDTH);
+$("#base").css("height", STAGE_HEIGHT);
 
 // game logic
 $(function(){
@@ -57,12 +57,12 @@ $(function(){
         if (newy > STAGE_HEIGHT - PLAYER_HEIGHT) newy = STAGE_HEIGHT - PLAYER_HEIGHT;
         if (newy < 0) newy = 0;
 
-        var c = $("#player").collision("#objects,.object_1", {x:newx, y:newy});
+        var c = $("#player").collision("#stage,#stage_objects,.object_1", {x:newx, y:newy});
         if (c.length > 0) {
             console.log("Structure collision");
             return;
         }
-        var c2 = $("#player").collision("#objects,.object_2");
+        var c2 = $("#player").collision("#stage,#stage_objects,.object_2");
         if (c2.length > 0 && key != KEY_NONE) {
 			var r = Math.random();
 			if (r < MONSTER_ENCOUNT_PROBABILITY) console.log("Monster!");

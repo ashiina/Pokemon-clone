@@ -5,6 +5,8 @@ var Player = function () {
 
     this._contructor = function () {
         console.log("init player");
+
+		$.playground().addGroup("actors", {width:STAGE_WIDTH, height:STAGE_HEIGHT});
         $("#actors").addSprite("player", {
             width:PLAYER_WIDTH,
             height:PLAYER_HEIGHT,
