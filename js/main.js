@@ -20,6 +20,7 @@ var MONSTER_ENCOUNT_PROBABILITY = 0.015;
 
 var SCREEN_STAGE = 1;
 var SCREEN_MENU = 2;
+var SCREEN_BATTLE = 3;
 
 var OBJECTS = {};
 
@@ -37,6 +38,7 @@ $(function(){
 	OBJECTS.stage.initObjects();
 	OBJECTS.player = new Player();
 	OBJECTS.menu = new Menu();
+	OBJECTS.battle = new Battle();
 
 	// gameQuery start
 	$.playground().startGame();
@@ -66,7 +68,9 @@ $(function(){
         var c2 = $("#player").collision("#stage,#stage_objects,.object_2");
         if (c2.length > 0 && key != KEY_NONE) {
 			var r = Math.random();
-			if (r < MONSTER_ENCOUNT_PROBABILITY) console.log("Monster!");
+			if (r < MONSTER_ENCOUNT_PROBABILITY) {
+				show_battle();
+			}
 		}
 
         OBJECTS.player.node.x(newx);
@@ -97,6 +101,10 @@ $(function(){
 		OBJECTS.menu.handleKey(key);
     }
 
+    var battle_callback = function (key) {
+		OBJECTS.battle.handleKey(key);
+    }
+
     var get_key = function () {
         var keys = jQuery.gameQuery.keyTracker;
         var key = KEY_NONE;
@@ -116,7 +124,14 @@ $(function(){
 
 	var show_stage = function () {
 		OBJECTS.menu.hide();
+		OBJECTS.battle.hide();
 		screen_id = SCREEN_STAGE;
+	}
+
+	var show_battle = function () {
+		OBJECTS.menu.hide();
+		OBJECTS.battle.show();
+		screen_id = SCREEN_BATTLE;
 	}
 
 	// game logic is here
@@ -125,6 +140,7 @@ $(function(){
         switch (screen_id) {
             case SCREEN_STAGE: stage_callback(key); break;
             case SCREEN_MENU: menu_callback(key); break;
+            case SCREEN_MENU: battle_callback(key); break;
         }
         prev_key = key;
 	}, FRAME_RATE);
