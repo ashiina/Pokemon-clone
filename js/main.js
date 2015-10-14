@@ -91,15 +91,10 @@ $(function(){
 	}
 
     var menu_callback = function (key) {
-		var newy = OBJECTS.menu.currentCursorPos;
         switch (key) {
             case KEY_M: if (key != prev_key) show_stage(); return;
-			case KEY_W: newy -= 1; break;
-			case KEY_S: newy += 1; break;
         }
-		if (newy > OBJECTS.player.owned_pokemons.length) newy = OBJECTS.player.owned_pokemons.length;
-		if (newy < 1) newy = 1;
-		OBJECTS.menu.drawCursor(newy);
+		OBJECTS.menu.handleKey(key);
     }
 
     var get_key = function () {

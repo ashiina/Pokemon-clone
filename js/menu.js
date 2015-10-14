@@ -50,8 +50,21 @@ var Menu = function () {
 		$("#menu_cursor").remove();
 		this.node.append('<div id="menu_cursor" style="position:absolute;top:'+posY+'px;left:10px;width:400px;color:#000;font-size:20px;">*</div>');
 		this.currentCursorPos = y;
-	}
+	};
 
+	this.handleKey = function (key) {
+		var newy = this.currentCursorPos;
+		switch (key) {
+			case KEY_W: newy -= 1; break;
+			case KEY_S: newy += 1; break;
+		}
+		if (newy > OBJECTS.player.owned_pokemons.length) 
+			newy = OBJECTS.player.owned_pokemons.length;
+		if (newy < 1) newy = 1;
+		this.drawCursor(newy);
+	};
 };
+
+
 
 
