@@ -44,7 +44,6 @@ $(function(){
     var stage_callback = function (key) {
         var newx = OBJECTS.player.node.x();
         var newy = OBJECTS.player.node.y();
-		console.log(key);
         switch (key) {
             case KEY_M: if (key != prev_key) show_menu(); return;
             case KEY_RET: interact_stage({x:newx, y:newy}); return;
@@ -62,7 +61,6 @@ $(function(){
 
         var c = $("#player").collision("#stage,#stage_objects,.object_1", {x:newx, y:newy});
         if (c.length > 0) {
-            console.log("Structure collision");
             return;
         }
         var c2 = $("#player").collision("#stage,#stage_objects,.object_2");
@@ -78,7 +76,6 @@ $(function(){
 	var interact_stage = function (opts) {
 		var newx = opts.x;
 		var newy = opts.y;
-		console.log("dir:"+OBJECTS.player.direction);
 		switch (OBJECTS.player.direction) {
 			case PlayerConst.DIR_UP: newy -= 5; break;
 			case PlayerConst.DIR_LEFT: newx -= 5; break;
@@ -87,7 +84,7 @@ $(function(){
 		}
         var c = $("#player").collision("#stage,#stage_objects,.pkcenter", {x:newx, y:newy});
         if (c.length > 0) {
-			console.log("INTERACT pokemon center!");
+			console.log("heal pokemon");
 			OBJECTS.player.healAllPokemons();
             return;
         }
