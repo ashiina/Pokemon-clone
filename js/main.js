@@ -1,11 +1,16 @@
 
 var KEY_START = -2;
 var KEY_NONE = -1;
+
+// キーコードはこれを参照
+// http://faq.creasus.net/04/0131/CharCode.html
 var KEY_A = 65;
 var KEY_D = 68;
 var KEY_W = 87;
 var KEY_S = 83;
 var KEY_M = 77;
+var KEY_J = 74;
+var KEY_K = 75;
 var KEY_RET = 13;
 var KEY_ESC = 27;
 
@@ -102,7 +107,9 @@ $(function(){
     }
 
     var battle_callback = function (key) {
-		OBJECTS.battle.handleKey(key);
+        if (key == prev_key) return;
+		var response = OBJECTS.battle.handleKey(key);
+        if (response == CLOSE) show_stage();
     }
 
     var get_key = function () {
@@ -113,6 +120,8 @@ $(function(){
         else if (keys[KEY_S]) key = KEY_S;
         else if (keys[KEY_D]) key = KEY_D;
         else if (keys[KEY_W]) key = KEY_W;
+        else if (keys[KEY_J]) key = KEY_J;
+        else if (keys[KEY_K]) key = KEY_K;
         else if (keys[KEY_RET]) key = KEY_RET;
         return key;
     }
@@ -140,7 +149,7 @@ $(function(){
         switch (screen_id) {
             case SCREEN_STAGE: stage_callback(key); break;
             case SCREEN_MENU: menu_callback(key); break;
-            case SCREEN_MENU: battle_callback(key); break;
+            case SCREEN_BATTLE: battle_callback(key); break;
         }
         prev_key = key;
 	}, FRAME_RATE);
