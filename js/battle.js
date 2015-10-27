@@ -16,29 +16,43 @@ var Battle = function () {
         'にげる',
     ];
 	this._contructor = function () {
-		this.animations.bg = new $.gQ.Animation({imageURL:"img/menu_bg.jpg"});
+		this.animations.bg = new $.gQ.Animation({imageURL:"img/battle_bg.png"});
 		$.playground().addGroup("battle", {width:STAGE_WIDTH, height:STAGE_HEIGHT});
 	};
 	this._contructor();
 
-	this.drawBattle = function () {
-		if (!this.node) return false;
-	};
-
     this.drawBattle = function () {
         if (!this.node) return false;
+
 
         // 先頭のポケモンを表示
         var _pokemon = OBJECTS.player.owned_pokemons[0];
         console.log(_pokemon);
+        $("#pokemon").remove();
         this.node.append(
-            '<div style="position:absolute;top:280px;left:50px;width:400px;color:#000;line-height:40px;">'
+            '<div id="pokemon" style="position:absolute;top:280px;left:50px;width:400px;color:#000;line-height:40px;">'
             + '<img src="' + _pokemon.imageUrl + '" style="width:150px" >'
             + '</div>'
         );
+        $("#pokemon_status").remove();
         this.node.append(
-            '<div style="position:absolute;top:430px;left:40px;width:400px;color:#000;line-height:40px;">'
+            '<div id="pokemon_status" style="position:absolute;top:430px;left:40px;width:400px;color:#000;line-height:40px;">'
             + _pokemon.name + " HP: " + _pokemon.hp + ' / ' + _pokemon.max_hp
+            + '</div>'
+        );
+
+        // 敵のポケモンを表示
+        var _enemy = OBJECTS.player.owned_pokemons[1];
+        $("#enemy").remove();
+        this.node.append(
+            '<div id="enemy" style="position:absolute;top:30px;left:450px;width:400px;color:#000;line-height:40px;">'
+            + '<img src="' + _enemy.imageUrl + '" style="width:150px" >'
+            + '</div>'
+        );
+        $("#enemy_status").remove();
+        this.node.append(
+            '<div id="enemy_status" style="position:absolute;top:200px;left:450px;width:400px;color:#000;line-height:40px;">'
+            + _enemy.name + " HP: " + _enemy.hp + ' / ' + _enemy.max_hp
             + '</div>'
         );
 
@@ -79,9 +93,22 @@ var Battle = function () {
         switch (this.currentCursorPos) {
         case 0:
             console.log('ATTACK!!');
+            var _enemy = OBJECTS.player.owned_pokemons[1];
+            _enemy.hp -= 20;
+            if (_enemy.hp <= 0) {
+                console.log('DEFEATED!!');
+                return CLOSE;
+            }
+            this.drawBattle();
             return CONTINUE;
         case 1:
             console.log('HEALING');
+            var _pokemon = OBJECTS.player.owned_pokemons[0];
+            _pokemon.hp += 20;
+            if (_pokemon.hp > _pokemon.max_hp) {
+                _pokemon.hp = _pokemon.max_hp;
+            }
+            this.drawBattle();
             return CONTINUE;
         case 2:
             console.log('ESCAPED...');
