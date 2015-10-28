@@ -42,6 +42,7 @@ $(function(){
 	OBJECTS.stage = new Stage();
 	OBJECTS.stage.initObjects();
 	OBJECTS.player = new Player();
+	OBJECTS.enemy = new Enemy();
 	OBJECTS.menu = new Menu();
 	OBJECTS.battle = new Battle();
 
