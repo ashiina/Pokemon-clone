@@ -6,6 +6,8 @@ var CONTINUE = 1;
 var CLOSE = 2;
 
 var Battle = function () {
+	this.myPokemon;
+	this.enemyPokemon;
 	this.currentCursorPos;
     this.node;
 	this.animations = {};
@@ -29,18 +31,20 @@ var Battle = function () {
         if (!this.node) return false;
 
         // 先頭のポケモンを表示
-        var _pokemon = OBJECTS.player.owned_pokemons[0];
-        console.log(_pokemon);
+        this.myPokemon = OBJECTS.player.owned_pokemons[0];
+        console.log(this.myPokemon);
         this.node.append(
             '<div style="position:absolute;top:280px;left:50px;width:400px;color:#000;line-height:40px;">'
-            + '<img src="' + _pokemon.imageUrl + '" style="width:150px" >'
+            + '<img src="' + this.myPokemon.imageUrl + '" style="width:150px" >'
             + '</div>'
         );
         this.node.append(
             '<div style="position:absolute;top:430px;left:40px;width:400px;color:#000;line-height:40px;">'
-            + _pokemon.name + " HP: " + _pokemon.hp + ' / ' + _pokemon.max_hp
+            + this.myPokemon.name + " HP: <span id='my_current_hp'>" + this.myPokemon.hp + '</span> / ' + this.myPokemon.max_hp
             + '</div>'
         );
+
+		// 敵ポケモンを表示
 
         // 行動の選択肢を表示
         for (var i = 0; i < this.options.length; i++) {
@@ -57,6 +61,7 @@ var Battle = function () {
 				width:STAGE_WIDTH, height:STAGE_HEIGHT })
 				.z(100);
 		this.node = $("#bg_battle");
+		this.chooseEnemyPokemon();
 		this.drawBattle();
 
 		this.currentCursorPos = 0;
@@ -81,7 +86,9 @@ var Battle = function () {
             console.log('ATTACK!!');
             return CONTINUE;
         case 1:
-            console.log('HEALING');
+            console.log('HEALING!');
+			this.myPokemon.setHp(this.myPokemon.max_hp);
+			$("#my_current_hp").html(this.myPokemon.hp);
             return CONTINUE;
         case 2:
             console.log('ESCAPED...');
@@ -103,6 +110,11 @@ var Battle = function () {
         else if (newy < 0) newy = this.options.length - 1;
 		this.drawCursor(newy);
         return response;
+	};
+
+	this.chooseEnemyPokemon = function () {
+		// TODO randomize
+		this.enemyPokemon = new Hitokage();
 	};
 };
 
