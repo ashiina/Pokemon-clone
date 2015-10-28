@@ -74,7 +74,7 @@ $(function(){
         var c2 = $("#player").collision("#stage,#stage_objects,.object_2");
         if (c2.length > 0 && key != KEY_NONE) {
 			var r = Math.random();
-			if (1 || r < MONSTER_ENCOUNT_PROBABILITY) {
+			if (r < MONSTER_ENCOUNT_PROBABILITY) {
 				show_battle();
 			}
 		}
