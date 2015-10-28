@@ -33,4 +33,24 @@ Hitokage.prototype.defense = 50;
 Hitokage.prototype.speed = 50;
 Hitokage.prototype.imageUrl = "http://cdn.bulbagarden.net/upload/thumb/7/73/004Charmander.png/250px-004Charmander.png";
 
+var Gyarados = function () { };
+Gyarados.prototype = Object.create(Pokemon.prototype);
+Gyarados.prototype.name = "ギャラドス";
+Gyarados.prototype.hp = Gyarados.prototype.max_hp = 100;
+Gyarados.prototype.attack = 100;
+Gyarados.prototype.defense = 50;
+Gyarados.prototype.speed = 70;
+Gyarados.prototype.imageUrl = "http://cdn.bulbagarden.net/upload/thumb/4/41/130Gyarados.png/250px-130Gyarados.png";
+
+var Kabigon = function () { };
+Kabigon.prototype = Object.create(Pokemon.prototype);
+Kabigon.prototype.name = "カビゴン";
+Kabigon.prototype.hp = Kabigon.prototype.max_hp = 110;
+Kabigon.prototype.attack = 40;
+Kabigon.prototype.defense = 80;
+Kabigon.prototype.speed = 30;
+Kabigon.prototype.imageUrl = "http://cdn.bulbagarden.net/upload/thumb/f/fb/143Snorlax.png/250px-143Snorlax.png";
+
+
+
 

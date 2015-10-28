@@ -6,6 +6,7 @@ var CONTINUE = 1;
 var CLOSE = 2;
 
 var Battle = function () {
+	this.enemy_pokemon_list = [];
     this.my_pokemon;
     this.enemy_pokemon;
 	this.currentCursorPos;
@@ -22,7 +23,15 @@ var Battle = function () {
 		this.animations.bg = new $.gQ.Animation({imageURL:"img/battle_bg.png"});
 		$.playground().addGroup("battle", {width:STAGE_WIDTH, height:STAGE_HEIGHT});
         this.my_pokemon = OBJECTS.player.owned_pokemons[0];
+
+		this.initializeEnemyList();
 	};
+
+	this.initializeEnemyList = function () {
+		this.enemy_pokemon_list.push('Hitokage');
+		this.enemy_pokemon_list.push('Kabigon');
+		this.enemy_pokemon_list.push('Gyarados');
+	}
 
     this.drawBattle = function () {
         if (!this.node) return false;
@@ -90,10 +99,11 @@ var Battle = function () {
 	};
 
     this.select = function (key) {
+		// player's action
         switch (this.currentCursorPos) {
         case 0:
             console.log('ATTACK!!');
-            this.enemy_pokemon.hp -= 20;
+			this.dealDamage(this.my_pokemon, this.enemy_pokemon);
             break;
         case 1:
             console.log('HEALING');
@@ -107,21 +117,25 @@ var Battle = function () {
             console.log('ESCAPED...');
             return CLOSE;
         }
-        this.enemy_action();
         this.drawBattle();
         if (this.enemy_pokemon.hp <= 0) {
             console.log('DEFEATED!!');
             return CLOSE;
         }
+
+		// enemy's action
+        this.enemy_action();
+        this.drawBattle();
         if (this.my_pokemon.hp < 0) {
             console.log('LOSE...');
+			this.my_pokemon.hp = 1;
             return CLOSE;
         }
         return CONTINUE;
     };
 
     this.enemy_action = function () {
-        this.my_pokemon.hp -= 30;
+		this.dealDamage(this.enemy_pokemon, this.my_pokemon);
     };
 
 	this.handleKey = function (key) {
@@ -141,9 +155,31 @@ var Battle = function () {
 	};
 
     this.chooseEnemyPokemon = function () {
-        // TODO randomize
-        return new Hitokage();
+		// get random from name list
+		var enemy_pokemon_classname = this.enemy_pokemon_list[Math.floor(Math.random()*this.enemy_pokemon_list.length)];
+		// instantiate with string
+		return new window[enemy_pokemon_classname];
     };
+
+	/*
+	deal damage from source_pokemon to target_pokemon. 
+
+	damage calculation:
+		(0.7~1.3)*source.attack - (1.0~1.3)*target.defense
+	*/
+	this.dealDamage = function (source_pokemon, target_pokemon) {
+		var attack_multiplier = Math.random() * (1.3 - 0.7) + 0.7;
+		var defense_multiplier = Math.random() * (1.3 - 1.0) + 1.0;
+
+		var damage = (attack_multiplier * source_pokemon.attack) - (defense_multiplier * target_pokemon.defense);
+		if (damage < 1) {
+			damage = Math.random() * (20 - 10) + 10;
+		}
+		damage = Math.floor(damage);
+		console.log(attack_multiplier+'*'+source_pokemon.attack+' - '+defense_multiplier+'*'+target_pokemon.defense+' = '+damage);
+
+		target_pokemon.hp -= damage;
+	}
 
 	this._contructor();
 
