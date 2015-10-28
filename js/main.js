@@ -1,11 +1,16 @@
 
 var KEY_START = -2;
 var KEY_NONE = -1;
+
+// キーコードはこれを参照
+// http://faq.creasus.net/04/0131/CharCode.html
 var KEY_A = 65;
 var KEY_D = 68;
 var KEY_W = 87;
 var KEY_S = 83;
 var KEY_M = 77;
+var KEY_J = 74;
+var KEY_K = 75;
 var KEY_RET = 13;
 var KEY_ESC = 27;
 
@@ -20,6 +25,7 @@ var MONSTER_ENCOUNT_PROBABILITY = 0.015;
 
 var SCREEN_STAGE = 1;
 var SCREEN_MENU = 2;
+var SCREEN_BATTLE = 3;
 
 var OBJECTS = {};
 
@@ -36,7 +42,9 @@ $(function(){
 	OBJECTS.stage = new Stage();
 	OBJECTS.stage.initObjects();
 	OBJECTS.player = new Player();
+	OBJECTS.enemy = new Enemy();
 	OBJECTS.menu = new Menu();
+	OBJECTS.battle = new Battle();
 
 	// gameQuery start
 	$.playground().startGame();
@@ -66,7 +74,9 @@ $(function(){
         var c2 = $("#player").collision("#stage,#stage_objects,.object_2");
         if (c2.length > 0 && key != KEY_NONE) {
 			var r = Math.random();
-			if (r < MONSTER_ENCOUNT_PROBABILITY) console.log("Monster!");
+			if (r < MONSTER_ENCOUNT_PROBABILITY) {
+				show_battle();
+			}
 		}
 
         OBJECTS.player.node.x(newx);
@@ -91,15 +101,16 @@ $(function(){
 	}
 
     var menu_callback = function (key) {
-		var newy = OBJECTS.menu.currentCursorPos;
         switch (key) {
             case KEY_M: if (key != prev_key) show_stage(); return;
-			case KEY_W: newy -= 1; break;
-			case KEY_S: newy += 1; break;
         }
-		if (newy > OBJECTS.player.owned_pokemons.length) newy = OBJECTS.player.owned_pokemons.length;
-		if (newy < 1) newy = 1;
-		OBJECTS.menu.drawCursor(newy);
+		OBJECTS.menu.handleKey(key);
+    }
+
+    var battle_callback = function (key) {
+        if (key == prev_key) return;
+		var response = OBJECTS.battle.handleKey(key);
+        if (response == CLOSE) show_stage();
     }
 
     var get_key = function () {
@@ -110,6 +121,8 @@ $(function(){
         else if (keys[KEY_S]) key = KEY_S;
         else if (keys[KEY_D]) key = KEY_D;
         else if (keys[KEY_W]) key = KEY_W;
+        else if (keys[KEY_J]) key = KEY_J;
+        else if (keys[KEY_K]) key = KEY_K;
         else if (keys[KEY_RET]) key = KEY_RET;
         return key;
     }
@@ -121,7 +134,14 @@ $(function(){
 
 	var show_stage = function () {
 		OBJECTS.menu.hide();
+		OBJECTS.battle.hide();
 		screen_id = SCREEN_STAGE;
+	}
+
+	var show_battle = function () {
+		OBJECTS.menu.hide();
+		OBJECTS.battle.show();
+		screen_id = SCREEN_BATTLE;
 	}
 
 	// game logic is here
@@ -130,6 +150,7 @@ $(function(){
         switch (screen_id) {
             case SCREEN_STAGE: stage_callback(key); break;
             case SCREEN_MENU: menu_callback(key); break;
+            case SCREEN_BATTLE: battle_callback(key); break;
         }
         prev_key = key;
 	}, FRAME_RATE);
