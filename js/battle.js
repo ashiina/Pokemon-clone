@@ -6,6 +6,7 @@ var CONTINUE = 1;
 var CLOSE = 2;
 
 var Battle = function () {
+	this.enemy_pokemon_list = [];
     this.my_pokemon;
     this.enemy_pokemon;
 	this.currentCursorPos;
@@ -22,7 +23,15 @@ var Battle = function () {
 		this.animations.bg = new $.gQ.Animation({imageURL:"img/battle_bg.png"});
 		$.playground().addGroup("battle", {width:STAGE_WIDTH, height:STAGE_HEIGHT});
         this.my_pokemon = OBJECTS.player.owned_pokemons[0];
+
+		this.initializeEnemyList();
 	};
+
+	this.initializeEnemyList = function () {
+		this.enemy_pokemon_list.push('Hitokage');
+		this.enemy_pokemon_list.push('Kabigon');
+		this.enemy_pokemon_list.push('Gyarados');
+	}
 
     this.drawBattle = function () {
         if (!this.node) return false;
@@ -141,9 +150,15 @@ var Battle = function () {
 	};
 
     this.chooseEnemyPokemon = function () {
-        // TODO randomize
-        return new Hitokage();
+		// get random from name list
+		var enemy_pokemon_classname = this.enemy_pokemon_list[Math.floor(Math.random()*this.enemy_pokemon_list.length)];
+		// instantiate with string
+		return new window[enemy_pokemon_classname];
     };
+
+	this.dealDamage = function (source_pokemon, target_pokemon) {
+		
+	}
 
 	this._contructor();
 
